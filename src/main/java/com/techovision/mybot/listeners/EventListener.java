@@ -1,10 +1,14 @@
 package com.techovision.mybot.listeners;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
+import net.dv8tion.jda.api.events.user.update.UserUpdateOnlineStatusEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
@@ -39,4 +43,30 @@ public class EventListener extends ListenerAdapter {
         }
     }
 
+    @Override
+    public void onGuildMemberJoin(GuildMemberJoinEvent event) {
+        event.getMember().getAvatar();
+    }
+
+    @Override
+    public void onUserUpdateOnlineStatus(@NotNull UserUpdateOnlineStatusEvent event) {
+        User user = event.getUser();
+        OnlineStatus status = event.getMember().getOnlineStatus();
+        String statusMember = "";
+        String txt ="";
+
+        switch (status){
+            case ONLINE -> statusMember = "Онлай";
+            case DO_NOT_DISTURB -> statusMember = "Небеспокоить";
+            case IDLE -> statusMember = "Отошёл";
+            case OFFLINE -> statusMember ="Вышел";
+        }
+            if (statusMember != "Вышел")
+                txt = "**" + user.getName() + "** обновил свой статус на -> " + statusMember;
+            else
+                txt = "**" + user.getName() + "** -> " + statusMember;
+
+            TextChannel channel = event.getGuild().getSystemChannel();
+            channel.sendMessage(txt).queue();
+    }
 }
