@@ -16,6 +16,6 @@ public class EventListener extends ListenerAdapter {
         String jumplink = event.getJumpUrl();
 
         String massage = user.getAsTag() + "отправил реакцию - " + emoji + "в канале" + mychanel;
-        event.getGuild().getDefaultChannel().sendMessage();
+        event.getGuild().getDefaultChannel();
     }
 }
