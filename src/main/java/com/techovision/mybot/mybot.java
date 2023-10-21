@@ -1,5 +1,6 @@
 package com.techovision.mybot;
 
+import com.techovision.mybot.listeners.EventListener;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
@@ -20,7 +21,10 @@ public class mybot {
         builder.setStatus(OnlineStatus.ONLINE);
         builder.setActivity(Activity.playing("DISCORD"));
         shardManager = builder.build();
+
+        shardManager.addEventListener(new EventListener());
     }
+
 
     public ShardManager getShardManager() {
         return shardManager;
