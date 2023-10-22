@@ -25,7 +25,13 @@ public class mybot {
         DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(token);
         builder.setStatus(OnlineStatus.ONLINE);
         builder.setActivity(Activity.playing("DISCORD"));
-        builder.enableIntents(GatewayIntent.MESSAGE_CONTENT,GatewayIntent.GUILD_INVITES,GatewayIntent.GUILD_EMOJIS_AND_STICKERS,GatewayIntent.AUTO_MODERATION_CONFIGURATION,GatewayIntent.GUILD_PRESENCES,GatewayIntent.GUILD_MEMBERS);
+        builder.enableIntents(GatewayIntent.MESSAGE_CONTENT,
+                GatewayIntent.GUILD_INVITES,
+                GatewayIntent.GUILD_EMOJIS_AND_STICKERS,
+                GatewayIntent.AUTO_MODERATION_CONFIGURATION,
+                GatewayIntent.GUILD_PRESENCES,
+                GatewayIntent.GUILD_MEMBERS,
+                GatewayIntent.GUILD_VOICE_STATES);
         //Просматривает всех пользователей
         builder.setMemberCachePolicy(MemberCachePolicy.ALL);
         builder.setChunkingFilter(ChunkingFilter.ALL);
@@ -46,5 +52,4 @@ public class mybot {
 
 
     }
-
 }
