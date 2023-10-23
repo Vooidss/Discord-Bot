@@ -49,7 +49,5 @@ public class mybot {
 
     public static void main(String[] args){
         mybot bot = new mybot();
-
-
     }
 }
