@@ -16,15 +16,15 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.managers.AudioManager;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class EventListener extends ListenerAdapter {
 
+
     @Override
     public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
+
         User user = event.getUser();
         String emoji = event.getReaction().getEmoji().getAsReactionCode();
         String mychanel = event.getChannel().getAsMention();
@@ -33,6 +33,7 @@ public class EventListener extends ListenerAdapter {
         String massage = user.getGlobalName() + " отправил реакцию - " + emoji + " в канале " + mychanel;
         TextChannel channel = event.getGuild().getTextChannelById(event.getChannel().getId());
         channel.sendMessage(massage).queue();
+
     }
 
     @Override
@@ -41,17 +42,12 @@ public class EventListener extends ListenerAdapter {
         String message = event.getMessage().getContentRaw().toLowerCase(Locale.ROOT);
         final Dotenv config;
         config = Dotenv.configure().ignoreIfMalformed().load();
-        String redirected = "";
-        String Id_VoiceChanel = "";
         String VK = config.get("VK");
         String TG = config.get("TELEGRAM");
-        OnlineStatus onlineStatus = event.getMember().getOnlineStatus();
         List<Member> members = event.getGuild().getMembers();
-        VoiceChannel voiceChannel = event.getGuild().getVoiceChannelById("1164997029295034413");
-        AudioManager audioManager = event.getGuild().getAudioManager();
 
         if(message.contains("присоединись к голосовому каналу")){
-            joinVoiceChannel(event.getGuild(), event.getGuild().getVoiceChannelById(WhichVoiceChannel(message.substring(message.indexOf("каналу")+6))));
+            joinVoiceChannel(event.getGuild(), event.getGuild().getVoiceChannelById(WhichVoiceChannel(event.getGuild(), message.substring(message.indexOf("каналу")+7))));
         }
 
         switch (message){
@@ -60,6 +56,7 @@ public class EventListener extends ListenerAdapter {
             case "кто моя любимая девочка?" -> event.getChannel().sendMessage("Ксюшечка").queue();
             case "@all" -> event.getChannel().sendMessage(MemberstOnlineStatus(members)).queue();
         }
+
     }
 
     @Override
@@ -119,15 +116,27 @@ public class EventListener extends ListenerAdapter {
         AudioManager audioManager = guild.getAudioManager();
         audioManager.openAudioConnection(voiceChannel);
     }
-    public String WhichVoiceChannel(String channel){;
-        switch (channel.toLowerCase(Locale.ROOT)){
-            case " основной" -> {
-                return "1164997029295034413";
-            }
-            case " второй" -> {
-                return "1165762172975058994";
-            }
+    public String WhichVoiceChannel(Guild guild,String channel){;
+
+        Map<String,VoiceChannel> voiceChannelsId = new HashMap<>();
+        List<VoiceChannel> voiceChanels = guild.getVoiceChannels();
+
+        for(VoiceChannel voiceChannel : voiceChanels){
+
+            voiceChannelsId.put(voiceChannel.getId(),voiceChannel);
+
         }
+
+        for(VoiceChannel Id : voiceChannelsId.values()){
+
+            if((String.valueOf(Id).toLowerCase()).contains(channel)){
+
+                return Id.getId();
+
+            }
+
+        }
+
     return null;
     }
 }
