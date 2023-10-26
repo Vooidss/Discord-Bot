@@ -8,7 +8,9 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.events.user.update.UserUpdateOnlineStatusEvent;
@@ -16,6 +18,12 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.managers.AudioManager;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.desktop.FilesEvent;
+import java.awt.desktop.PrintFilesEvent;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -49,6 +57,31 @@ public class EventListener extends ListenerAdapter {
         if(message.contains("присоединись к голосовому каналу")){
             joinVoiceChannel(event.getGuild(), event.getGuild().getVoiceChannelById(WhichVoiceChannel(event.getGuild(), message.substring(message.indexOf("каналу")+7))));
         }
+
+        if (message.equalsIgnoreCase("help")) {
+
+            StringBuilder stringBuilder = new StringBuilder();
+
+                try {
+                    File file = new File("C:\\Users\\Егор\\IdeaProjects\\Discord-Bot-main\\src\\main\\java\\com\\techovision\\mybot\\Help.txt");
+                    Scanner scanner = new Scanner(file);
+
+                    while (scanner.hasNextLine()) {
+                        String line = scanner.nextLine();
+                        stringBuilder.append(line).append("\n");
+                    }
+
+                    scanner.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                String result = stringBuilder.toString();
+                System.out.println(stringBuilder);
+
+                event.getChannel().sendMessage(result).queue();
+
+            }
 
         switch (message){
             case "мой телеграм" -> event.getChannel().sendMessage(TG).queue();
