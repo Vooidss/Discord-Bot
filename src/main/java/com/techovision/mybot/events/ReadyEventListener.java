@@ -1,4 +1,4 @@
-package com.techovision.mybot.listeners;
+package com.techovision.mybot.events;
 
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
