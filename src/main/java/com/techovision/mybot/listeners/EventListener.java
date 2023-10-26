@@ -54,6 +54,7 @@ public class EventListener extends ListenerAdapter {
             case "мой телеграм" -> event.getChannel().sendMessage(TG).queue();
             case "мой vk" -> event.getChannel().sendMessage(VK).queue();
             case "кто моя любимая девочка?" -> event.getChannel().sendMessage("Ксюшечка").queue();
+            case "кто мой любимый кот?" -> event.getChannel().sendMessage("Болбес под именем Шуга").queue();
             case "@all" -> event.getChannel().sendMessage(MemberstOnlineStatus(members)).queue();
         }
 
