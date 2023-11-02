@@ -15,9 +15,14 @@ import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
+import java.util.Arrays;
+
 public class mybot {
 
     private final Dotenv config;
+
+    public final static GatewayIntent[] INTENTS = { GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MESSAGE_REACTIONS, GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_PRESENCES, GatewayIntent.SCHEDULED_EVENTS};
+
 
     public mybot(){
 
@@ -27,12 +32,8 @@ public class mybot {
         JDABuilder builder = JDABuilder.createDefault(token);
 
         //Запуск и настройка бота
-            JDA jda = builder.enableIntents(
-                        GatewayIntent.MESSAGE_CONTENT,
-                        GatewayIntent.GUILD_PRESENCES,
-                        GatewayIntent.GUILD_MEMBERS,
-                        GatewayIntent.GUILD_VOICE_STATES,
-                        GatewayIntent.GUILD_MESSAGES)
+
+            JDA jda = builder.enableIntents(Arrays.asList(INTENTS))
                 .addEventListeners(new MessageReactionAdd(),new SlashComandsEvent(),new MessageReceived(),new SlashComandsEvent(),new UserUpdateOnlineStatus())
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .setChunkingFilter(ChunkingFilter.ALL)
